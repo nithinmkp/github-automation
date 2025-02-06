@@ -18,7 +18,7 @@ jobs:
           libcurl4-openssl-dev \
           libfontconfig1-dev \
           libfreetype6-dev \
-          libharfbuzz-dev
+          libharfbuzz-dev  \
           libfribidi-dev
 
 
