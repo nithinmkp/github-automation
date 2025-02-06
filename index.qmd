@@ -1,0 +1,27 @@
+---
+title: "Report"
+format: html
+execute: 
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r}
+library(tidyverse)
+library(googlesheets4)
+library(gt)
+```
+
+Report last updated `r now()`.
+
+```{r}
+gs4_deauth()
+
+survey_data <- read_sheet("https://docs.google.com/spreadsheets/d/1odw6d_0VTGIuN5c0ja3TJYVK9on1LjV2gAFmsgm6VGc/edit?usp=sharing")
+
+survey_data %>%
+select(-1) %>%
+head() %>%
+  gt()
+```
