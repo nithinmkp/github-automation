@@ -22,6 +22,6 @@ survey_data <- read_sheet("https://docs.google.com/spreadsheets/d/1odw6d_0VTGIuN
 
 survey_data %>%
 select(-1) %>%
-head() %>%
+head(n=10) %>%
   gt()
 ```
