@@ -16,6 +16,8 @@ jobs:
               any::tidyverse 
               any::googlesheets4
               any::gt
+        - name: Import data
+          run: Rscript -e 'source("render.R")'
   
         - name: Set up Quarto
           uses: quarto-dev/quarto-actions/setup@v2
@@ -27,4 +29,5 @@ jobs:
           uses: quarto-dev/quarto-actions/publish@v2
           with:
             target: netlify
+            render: false
             NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
