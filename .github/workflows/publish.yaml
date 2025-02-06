@@ -16,6 +16,7 @@ jobs:
               any::tidyverse 
               any::googlesheets4
               any::gt
+              any::quarto
         - name: Import data
           run: Rscript -e 'source("render.R")'
   
