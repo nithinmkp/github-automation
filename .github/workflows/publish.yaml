@@ -47,6 +47,6 @@ jobs:
           git commit -m 'Report updated' || echo "No changes to commit"
           git push origin
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          GITHUB_TOKEN: ${{ secrets.WORFK_FLOW }}
 
 
