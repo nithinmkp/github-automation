@@ -39,10 +39,10 @@ jobs:
       - name: Render Data
         run: Rscript -e 'source("render.R")'
 
-      - name: Render and Publish to Netlify
-        uses: quarto-dev/quarto-actions/publish@v2
-        with:
-          target: netlify
-          render: false
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      - name: Commit results
+        run: |
+         git config --local user.email "actions@github.com"
+         git config --local user.name "GitHub Actions"
+         git add survey_data.rds
+         git commit -m 'Data updated' || echo "No changes to commit"
+         git push origin || echo "No changes to commit"
