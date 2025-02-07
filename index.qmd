@@ -1,5 +1,5 @@
 ---
-title: "Report"
+title: "Report of Survey"
 format: html
 execute: 
   echo: false
@@ -7,21 +7,100 @@ execute:
   message: false
 ---
 
+
+
 ```{r}
+
 library(tidyverse)
 library(googlesheets4)
 library(gt)
+library(modelsummary)
+library(gtsummary)
+library(janitor)
 ```
 
-Report last updated `r now()`.
+Report last updated `r format(Sys.Date(), "%B %d, %Y")`.
 
 ```{r}
 gs4_deauth()
 
 survey_data <- read_sheet("https://docs.google.com/spreadsheets/d/1odw6d_0VTGIuN5c0ja3TJYVK9on1LjV2gAFmsgm6VGc/edit?usp=sharing")
 
+survey_data <- survey_data %>%
+               mutate(across(-c(1:3),as.factor)) 
+
 survey_data %>%
 select(-1) %>%
 head(n=10) %>%
-  gt()
+  gt() 
 ```
+
+```{r}
+survey_data <- survey_data %>%
+clean_names() %>%
+  mutate(age_group = case_when(
+    age < 25 ~ "Less than 25",
+    age >= 25 & age <= 50 ~ "25-50",
+    age > 50 ~ "50 above",
+    TRUE ~ NA_character_
+  )) %>%
+  mutate(age_group =as.factor(age_group))
+
+
+survey_data %>%
+  select(-1, -2,-3) %>%
+  tbl_summary() %>%
+  as_gt()
+```
+
+
+```{r}
+#| label: sumamry-age
+
+
+sum_age <-datasummary_skim(survey_data, type ="numeric", fun_numeric = list(N =N,Unique = NUnique,Mean = Mean, SD =
+    SD, Min = Min, Median = Median, Max = Max),output = "gt")
+
+
+sum_age <- sum_age %>%
+  fmt_number(
+    columns = -1,
+    decimals = 2
+  )
+
+```
+
+```{r}
+#| label: pie-charts
+create_pie_chart <- function(df, var, title) {
+  df %>%
+    count(!!sym(var)) %>%
+    mutate(percentage = n / sum(n) * 100) %>%
+    ggplot(aes(x = "", y = n, fill = !!sym(var))) +
+    geom_col(width = 1) +
+    coord_polar(theta = "y") +
+    geom_text(aes(label = paste0(n, " (", round(percentage, 1), "%)")), 
+              position = position_stack(vjust = 0.5), size = 5) +
+    labs(title = title, fill = var) +
+    theme_void() +
+    theme(legend.position = "right")
+}
+
+# Generate plots
+age_plot <- create_pie_chart(survey_data, "age_group", "Age Group Distribution")
+house_plot <- create_pie_chart(survey_data, "house", "House Ownership Distribution")
+locality_plot <- create_pie_chart(survey_data, "locality", "Locality Distribution")
+```
+
+
+```{r}
+#| layout-ncol: 1
+age_plot
+```
+
+```{r}
+#| layout-ncol: 2
+house_plot
+locality_plot
+```
+
