@@ -30,7 +30,7 @@ survey_data <- survey_data %>%
 
 survey_data %>%
 select(-1) %>%
-head(n=10) %>%
+tail(n=10) %>%
   gt() 
 ```
 
