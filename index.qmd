@@ -18,7 +18,7 @@ library(gtsummary)
 library(janitor)
 ```
 
-Report last updated `r format(Sys.Date(), "%B %d, %Y")`.
+Report last updated `r format(Sys.time(), "%B %d, %Y %H:%M")`.
 
 ```{r}
 gs4_deauth()
