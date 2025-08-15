@@ -9,7 +9,7 @@ jobs:
       - name: Check out repository with PAT
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GH_PAT }}  # ✅ Use PAT instead of default GITHUB_TOKEN
+          token: ${{ secrets.GH_PAT2 }}  # ✅ Use PAT instead of default GITHUB_TOKEN
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
